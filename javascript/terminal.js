@@ -16,7 +16,7 @@ function createTerminal() {
     let socket;
     while (true) {
         try {
-            socket = new WebSocket('ws://localhost:8000');
+            socket = new WebSocket('ws://localhost:45875');
 
             // Handle connection failures through events
             socket.onerror = (error) => {
