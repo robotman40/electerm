@@ -7,7 +7,8 @@ function startServer() {
     try {
         const server = new WebSocket.Server({ port: 45875 });
         server.on('connection', (ws, req) => {
-            const shell = os.platform() === 'win32' ? 'powershell.exe' : process.env.SHELL || '/bin/sh' ;
+            // On Windows, cmd.exe must be used since powershell.exe has rendering problems. On Unix-like systems, use the default shell.
+            const shell = os.platform() === 'win32' ? 'cmd.exe' : process.env.SHELL || '/bin/sh' ; 
 
             const term = spawn(shell, [], {
                 cwd: process.env.HOME,
