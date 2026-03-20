@@ -1,6 +1,6 @@
 {
   "name": "Electerm",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Javascript-based Terminal",
   "license": "MIT",
   "author": "Chris Rios",
@@ -35,6 +35,10 @@
   "build": {
     "mac": {
       "icon": "build/icon.png"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
     }
   }
 }
