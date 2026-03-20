@@ -5,7 +5,7 @@ const process = require('process');
 
 function startServer() {
     try {
-        const server = new WebSocket.Server({ port: 8000 });
+        const server = new WebSocket.Server({ port: 45875 });
         server.on('connection', (ws, req) => {
             const shell = os.platform() === 'win32' ? 'powershell.exe' : process.env.SHELL || '/bin/sh' ;
 
