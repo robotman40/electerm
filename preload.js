@@ -17,6 +17,5 @@ contextBridge.exposeInMainWorld('electron', {
     },
     getAppVersion: () => ipcRenderer.invoke('get-app-version'),
     openAbout: () => ipcRenderer.invoke('open-about-window'),
-    showErrorDialog: (message) => ipcRenderer.invoke('show-error-dialog', message),
     newTerminalWindow: () => ipcRenderer.invoke('new-terminal'),
 });

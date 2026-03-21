@@ -1,8 +1,9 @@
-const { app, dialog, BrowserWindow, ipcMain, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const { startServer } = require('./javascript/server');
 const fixPath = require('fix-path').default;
 const path = require('path');
-const tcpPortUsed = require('tcp-port-used');
+const net = require('net');
+const { start } = require('repl');
 
 fixPath(); // Ensure the server has the correct PATH environment variable
 
@@ -26,10 +27,22 @@ function createWindow() {
     })
 }
 
-async function checkPortInUse() {
-    const inUse = tcpPortUsed.check(45875);
+async function checkPortInUse(port) {
+    return new Promise((resolve) => {
+        const server = new net.Server();
 
-    return inUse;
+        server.once('error', (error) => {
+            if (error.code === 'EADDRINUSE') resolve(true);
+            else resolve(false);
+        });
+
+        server.once('listening', () => {
+            server.close();
+            resolve(false);
+        });
+
+        server.listen(port);
+    })
 }
 
 Menu.setApplicationMenu(null);
@@ -68,21 +81,13 @@ app.on('window-all-closed', () => {
 });
 
 app.whenReady().then(() => {
-    try {
-        if (!checkPortInUse()) {
-            startServer()
+    checkPortInUse(45875).then(inUse => {
+        if (!inUse) {
+            startServer(45875);
         }
-    } catch (e) {
-        const options = {
-            type: 'error',
-            title: 'Server Error',
-            message: 'Failed to start the server',
-        };
-        dialog.showMessageBoxSync(null, options)
-        app.quit();
-    };
+    });
 
-    createWindow()
+    createWindow();
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow()

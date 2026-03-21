@@ -3,9 +3,9 @@ const { spawn } = require('node-pty');
 const os = require('os');
 const process = require('process');
 
-function startServer() {
+function startServer(port) {
     try {
-        const server = new WebSocket.Server({ port: 45875 });
+        const server = new WebSocket.Server({ port: port });
         server.on('connection', (ws, req) => {
             // On Windows, cmd.exe must be used since powershell.exe has rendering problems. On Unix-like systems, use the default shell.
             const shell = os.platform() === 'win32' ? 'cmd.exe' : process.env.SHELL || '/bin/sh' ; 
