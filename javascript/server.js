@@ -11,7 +11,9 @@ function attachPtyProcess(terminalObject) {
         const ptyProcess = spawn(shell, [], {
             cwd: process.env.HOME,
             env: process.env,
-            encoding: 'utf8'
+            encoding: 'utf8',
+            rows: terminalObject.rows,
+            cols: terminalObject.cols
         });
 
         ptyProcess.on('data', (data) => terminalObject.write(data));
@@ -20,6 +22,9 @@ function attachPtyProcess(terminalObject) {
             window.close();
         })
         terminalObject.onData((data) => ptyProcess.write(data));
+        terminalObject.onResize((size) => {
+            ptyProcess.resize(size.cols, size.rows);
+        });
 
     } catch (e) {
       return e;
