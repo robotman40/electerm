@@ -1,30 +1,16 @@
-const { app, BrowserWindow, Menu } = require('electron');
-const { attachTerminalInternal } = require('./javascript/server');
+const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+const { createWindow, showAboutWindow } = require('./javascript/windows')
 const fixPath = require('fix-path').default;
-const path = require('path');
 
 fixPath(); // Ensure the server has the correct PATH environment variable
 
-function createWindow() {
-    const win = new BrowserWindow({
-        show: false,
-        width: 800,
-        height: 500,
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false
-        }
-    });
+ipcMain.on('create-new-window', () => {
+    createWindow()
+});
 
-    win.loadFile('index.html');
-    win.webContents.openDevTools(); // Uncomment for debugging purposes
-
-    win.once('ready-to-show', () => {
-        win.show()
-    })
-}
-
-Menu.setApplicationMenu(null);
+ipcMain.on('show-about-window', () => {
+    showAboutWindow();
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -34,6 +20,7 @@ app.on('window-all-closed', () => {
 
 app.whenReady().then(() => {
     createWindow();
+    Menu.setApplicationMenu(null);
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow()

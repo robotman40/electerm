@@ -1,3 +1,5 @@
+const { ipcRenderer } = require('electron');
+
 window.onload = function() {
     // create Terminal and get object
     const term = createTerminal();
@@ -6,7 +8,7 @@ window.onload = function() {
     const menuBar = document.getElementById('menu-bar');
     const buttons = {
             'Shell': {'New Window' : function () {
-                window.electron.newTerminalWindow();
+                ipcRenderer.send('create-new-window');
             }, 
             'Exit' : function () {
                 window.close();
@@ -49,7 +51,7 @@ window.onload = function() {
             fitAddon.fit();
         }},
         'Help': {'About' : function () {
-            window.electron.openAbout();
+            ipcRenderer.send('show-about-window');
         }}
     };
     // Create buttons and dropdowns for the menu bar
