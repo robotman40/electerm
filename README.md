@@ -1,5 +1,5 @@
 # Electerm
 
-<img width="912" height="612" alt="Fastfetch" src="https://github.com/user-attachments/assets/d3c716f0-b375-474a-aa0d-4868ecdde083" />
+<img width="912" height="612" alt="Screenshot 2026-03-20 at 5 01 16 PM" src="https://github.com/user-attachments/assets/cba055c0-c643-4d7c-b69f-fd3f7a014224" />
 
 A terminal emulator written in HTML, CSS, and Javascript with the Electron framework. It is supported across all major desktop platforms, including Windows, MacOS, and Linux.
