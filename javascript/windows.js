@@ -15,7 +15,7 @@ function showAboutWindow() {
     aboutWin.loadFile('about.html')
     aboutWin.once('ready-to-show', () => {
         aboutWin.show()
-    })
+    });
 }
 
 function createWindow() {
@@ -26,15 +26,15 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
-        }
+        } 
     });
 
     win.loadFile('index.html');
     // win.webContents.openDevTools(); // Uncomment for debugging purposes
 
     win.once('ready-to-show', () => {
-        win.show()
-    })
+        win.show();
+    });
 }
 
 module.exports = { createWindow, showAboutWindow };

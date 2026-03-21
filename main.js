@@ -12,6 +12,10 @@ ipcMain.on('show-about-window', () => {
     showAboutWindow();
 });
 
+ipcMain.handle('get-version', () => {
+    return app.getVersion();
+})
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();

@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>About Electerm</title>
         <link rel="stylesheet" href="style.css">
+        <script src="./javascript/about.js"></script>
     </head>
 
     <body>
@@ -13,20 +14,9 @@
             <h1>About Electerm</h1>
             <h3>Version: <span id="version"></span></h3>
             <script>
-                async function loadVersion() {
-                    try {
-                        const version = await window.electron.getAppVersion();
-                        document.getElementById('version').textContent = version;
-                    } catch (error) {
-                        document.getElementById('version').textContent = 'Error';
-                    }
-                }
-                
-                loadVersion();
             </script>
             <img width="300" height="300" src="assets/electerm_logo.png">
             <p>Electerm is an Electron-based terminal emulator built with xterm.js and Electron.</p>
-
             <p>Author: Chris Rios</p>
         </div>
     </body>
