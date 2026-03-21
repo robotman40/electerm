@@ -1,4 +1,7 @@
 const { contextBridge, ipcRenderer } = require('electron');
+const { spawn } = require('node-pty');
+const os = require('os');
+const process = require('process');
 
 // Expose these methods
 contextBridge.exposeInMainWorld('electron', {
@@ -17,5 +20,5 @@ contextBridge.exposeInMainWorld('electron', {
     },
     getAppVersion: () => ipcRenderer.invoke('get-app-version'),
     openAbout: () => ipcRenderer.invoke('open-about-window'),
-    newTerminalWindow: () => ipcRenderer.invoke('new-terminal'),
+    newTerminalWindow: () => ipcRenderer.invoke('new-terminal')
 });
