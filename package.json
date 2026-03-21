@@ -1,11 +1,7 @@
 {
   "name": "Electerm",
   "version": "0.0.4",
-<<<<<<< HEAD
   "description": "Terminal emulator built on Electron",
-=======
-  "description": "Javascript-based Terminal",
->>>>>>> 4ae8242fb0fbd90ed3d8580edd52606c9a7d8f70
   "license": "MIT",
   "author": "Chris Rios",
   "type": "commonjs",
