@@ -2,10 +2,11 @@ const { app, dialog, BrowserWindow, ipcMain, Menu } = require('electron');
 const { startServer } = require('./javascript/server');
 const fixPath = require('fix-path').default;
 const path = require('path');
+const tcpPortUsed = require('tcp-port-used');
 
 fixPath(); // Ensure the server has the correct PATH environment variable
 
-const createWindow = () => {
+function createWindow() {
     const win = new BrowserWindow({
         show: false,
         width: 800,
@@ -23,6 +24,12 @@ const createWindow = () => {
     win.once('ready-to-show', () => {
         win.show()
     })
+}
+
+async function checkPortInUse() {
+    const inUse = tcpPortUsed.check(45875);
+
+    return inUse;
 }
 
 Menu.setApplicationMenu(null);
@@ -62,7 +69,9 @@ app.on('window-all-closed', () => {
 
 app.whenReady().then(() => {
     try {
-        startServer()
+        if (!checkPortInUse()) {
+            startServer()
+        }
     } catch (e) {
         const options = {
             type: 'error',
