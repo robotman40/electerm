@@ -41,14 +41,11 @@ window.onload = function() {
         }},
         'View': {'Zoom In' : function () {
             // Zoom In functionality
-            term.options.fontSize += 2; // Increase font size to zoom in
-            fitAddon.fit();
+            term.zoomIn();
         }, 'Zoom Out' : function () {
-            term.options.fontSize -= 2; // Decrease font size to zoom out
-            fitAddon.fit();
+            term.zoomOut(); // Decrease font size to zoom out
         }, 'Reset Zoom' : function () {
-            term.options.fontSize = 13; // Reset to default font size
-            fitAddon.fit();
+            term.resetZoom(); // Reset to default font size
         }},
         'Help': {'About' : function () {
             ipcRenderer.send('show-about-window');
