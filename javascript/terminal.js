@@ -1,11 +1,13 @@
-function fitTerminal(term, fitAddon, ptyProcess) {
+function fitTerminal(term, fitAddon, ptyProcess, resizeContents = false) {
     const terminalView = document.getElementById('terminal');
     terminalView.getElementsByClassName('xterm-screen')[0].style.height = window.innerHeight - 10 + 'px'; // Ensure the terminal fills the container
 
-    // Do a brief resize to get the text to fit/wrap
-    window.resizeBy(1, 1);
-    window.resizeBy(-1, -1);
+    if (resizeContents) {
+        window.resizeBy(1, 1);
+        window.resizeBy(-1, -1);
+    }
 
+    // Do a brief resize to get the text to fit/wrap
     fitAddon.fit();
     term.refresh(0, term.rows - 1);
     ptyProcess.updateSize(term.cols, term.rows);
@@ -30,17 +32,17 @@ function createTerminal() {
 
     term.zoomIn = function() {
         term.options.fontSize += 2; // Increase font size to zoom in
-        fitTerminal(term, fitAddon, ptyProcess);
+        fitTerminal(term, fitAddon, ptyProcess, true);
     }
 
     term.zoomOut = function() {
         term.options.fontSize -= 2; // Decrease font size to zoom out
-        fitTerminal(term, fitAddon, ptyProcess);
+        fitTerminal(term, fitAddon, ptyProcess, true);
     }
 
     term.resetZoom = function() {
         term.options.fontSize = 13; // Decrease font size to zoom out
-        fitTerminal(term, fitAddon, ptyProcess);
+        fitTerminal(term, fitAddon, ptyProcess, true);
     }
 
     // Handle window resize events to keep the terminal fitting the container
