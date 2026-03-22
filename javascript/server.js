@@ -26,9 +26,6 @@ function attachPtyProcess(terminalObject, fitAddonObject) {
             window.close();
         })
         terminalObject.onData((data) => ptyProcess.write(data));
-        // terminalObject.onResize((size) => {
-        //     ptyProcess.updateSize(size.cols, size.rows);
-        // });
 
         return ptyProcess;
 
