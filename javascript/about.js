@@ -6,7 +6,10 @@ window.onload = function() {
         document.getElementById('version').textContent = version;
     });
 
+    const iconImage = document.getElementById('app-icon');
     if (platform() === 'darwin') {
-        document.getElementById('app-icon').src = "assets/electerm_logo_macos.png";
+        iconImage.src = "assets/electerm_logo_macos.png";
+    } else {
+        iconImage.src = "assets/electerm_logo.png";
     }
 }
