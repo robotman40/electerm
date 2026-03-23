@@ -1,16 +1,27 @@
-function fitTerminal(term, fitAddon, ptyProcess, resizeContents = false) {
+function fitTerminal(term, fitAddon, ptyProcess) {
     const terminalView = document.getElementById('terminal');
     terminalView.getElementsByClassName('xterm-screen')[0].style.height = window.innerHeight - 10 + 'px'; // Ensure the terminal fills the container
-
-    if (resizeContents) {
-        window.resizeBy(1, 1);
-        window.resizeBy(-1, -1);
-    }
 
     // Do a brief resize to get the text to fit/wrap
     fitAddon.fit();
     term.refresh(0, term.rows - 1);
     ptyProcess.updateSize(term.cols, term.rows);
+}
+
+function adjustWindowSize(term, value) {
+    new_width = (window.innerWidth * ((term.options.fontSize + value) / term.options.fontSize)) - window.innerWidth;
+    new_height = (window.innerHeight * ((term.options.fontSize + value) / term.options.fontSize)) - window.innerHeight;
+
+    term.options.fontSize += value;
+    window.resizeBy(new_width, new_height);
+}
+
+function resetWindowSize(term, size) {
+    new_width = window.innerWidth * (size / term.options.fontSize);
+    new_height = window.innerHeight * (size / term.options.fontSize);
+
+    term.options.fontSize = size;
+    window.resizeTo(new_width, new_height)
 }
 
 function createTerminal() {
@@ -31,18 +42,18 @@ function createTerminal() {
     fitTerminal(term, fitAddon, ptyProcess);
 
     term.zoomIn = function() {
-        term.options.fontSize += 2; // Increase font size to zoom in
-        fitTerminal(term, fitAddon, ptyProcess, true);
+        adjustWindowSize(term, 2);
+        fitTerminal(term, fitAddon, ptyProcess);
     }
 
     term.zoomOut = function() {
-        term.options.fontSize -= 2; // Decrease font size to zoom out
-        fitTerminal(term, fitAddon, ptyProcess, true);
+        adjustWindowSize(term, -2);
+        fitTerminal(term, fitAddon, ptyProcess);
     }
 
     term.resetZoom = function() {
-        term.options.fontSize = 13; // Decrease font size to zoom out
-        fitTerminal(term, fitAddon, ptyProcess, true);
+        resetWindowSize(term, 13);
+        fitTerminal(term, fitAddon, ptyProcess);
     }
 
     // Handle window resize events to keep the terminal fitting the container

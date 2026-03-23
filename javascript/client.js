@@ -60,10 +60,10 @@ window.onload = function() {
                 console.error('Failed to read clipboard contents: ', err);
             });
         }},
-        'View': {'Zoom In' : function () {
+        'View': {'Enlarge Text' : function () {
             // Zoom In functionality
             term.zoomIn();
-        }, 'Zoom Out' : function () {
+        }, 'Shrink Text' : function () {
             term.zoomOut(); // Decrease font size to zoom out
         }, 'Reset Zoom' : function () {
             term.resetZoom(); // Reset to default font size
@@ -117,11 +117,11 @@ window.onload = function() {
         menuBar.appendChild(btn);
     };
 
-    // Set up cut, copy, and paste events
     document.oncut(() => {
         navigator.clipboard.writeText(term.selectedText.trim());
     });
 
+    // Set up cut, copy, and paste events
     document.oncopy(() => {
         navigator.clipboard.writeText(term.selectedText.trim());
     });
