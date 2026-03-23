@@ -16,12 +16,9 @@ function adjustWindowSize(term, value) {
     window.resizeBy(new_width, new_height);
 }
 
-function resetWindowSize(term, size) {
-    new_width = window.innerWidth * (size / term.options.fontSize);
-    new_height = window.innerHeight * (size / term.options.fontSize);
-
+function resetWindowSize(term, width, height, size) {
     term.options.fontSize = size;
-    window.resizeTo(new_width, new_height)
+    window.resizeTo(width, height)
 }
 
 function createTerminal() {
@@ -52,7 +49,7 @@ function createTerminal() {
     }
 
     term.resetZoom = function() {
-        resetWindowSize(term, 13);
+        resetWindowSize(term, 800, 500, 13);
         fitTerminal(term, fitAddon, ptyProcess);
     }
 
