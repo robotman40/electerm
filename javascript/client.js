@@ -23,7 +23,7 @@ window.onload = function() {
     } else {
         shellMenu = {
                 'Shell': {'New Window' : function () {
-                    ipcRenderer.send('create-new-window');
+                    ipcRenderer.invoke('create-new-window');
                 }, 
                 'Exit' : function () {
                     ipcRenderer.invoke('quit-app')
@@ -69,7 +69,7 @@ window.onload = function() {
             term.resetZoom(); // Reset to default font size
         }},
         'Help': {'About' : function () {
-            ipcRenderer.send('show-about-window');
+            ipcRenderer.invoke('show-about-window');
         }}
     });
     // Create buttons and dropdowns for the menu bar
@@ -121,7 +121,7 @@ window.onload = function() {
     document.oncut(() => {
         navigator.clipboard.writeText(term.selectedText.trim());
     });
-    
+
     document.oncopy(() => {
         navigator.clipboard.writeText(term.selectedText.trim());
     });

@@ -4,11 +4,11 @@ const fixPath = require('fix-path').default;
 
 fixPath(); // Ensure the server has the correct PATH environment variable
 
-ipcMain.on('create-new-window', () => {
+ipcMain.handle('create-new-window', () => {
     createWindow()
 });
 
-ipcMain.on('show-about-window', () => {
+ipcMain.handle('show-about-window', () => {
     showAboutWindow();
 });
 
