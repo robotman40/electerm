@@ -116,4 +116,19 @@ window.onload = function() {
         }
         menuBar.appendChild(btn);
     };
+
+    // Set up cut, copy, and paste events
+    document.oncut(() => {
+        navigator.clipboard.writeText(term.selectedText.trim());
+    });
+    
+    document.oncopy(() => {
+        navigator.clipboard.writeText(term.selectedText.trim());
+    });
+
+    document.onpaste(() => {
+        navigator.clipboard.readText().then(text => {
+            term.write(text);
+        })
+    });
 }
