@@ -1,6 +1,6 @@
 {
   "name": "Electerm",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Terminal emulator built on Electron",
   "license": "MIT",
   "author": "Chris Rios",
