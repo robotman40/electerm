@@ -16,6 +16,10 @@ ipcMain.handle('get-version', () => {
     return app.getVersion();
 })
 
+ipcMain.handle('quit-app', () => {
+    app.quit()
+})
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();

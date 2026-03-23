@@ -1,19 +1,40 @@
 const { ipcRenderer } = require('electron');
+const os = require('os');
 
 window.onload = function() {
     // create Terminal and get object
     const term = createTerminal();
 
+    let shellMenu;
+    // For buttons, we will change how they work based off the platform
+    if (os.platform() === 'darwin') {
+        shellMenu = {
+                'Shell': {'New Window' : function () {
+                    ipcRenderer.invoke('create-new-window');
+                }, 
+                'Close Window': function () {
+                    window.close();
+                },
+                'Quit' : function () {
+                    ipcRenderer.invoke('quit-app')
+                }
+            }
+        }
+    } else {
+        shellMenu = {
+                'Shell': {'New Window' : function () {
+                    ipcRenderer.send('create-new-window');
+                }, 
+                'Exit' : function () {
+                    ipcRenderer.invoke('quit-app')
+                }
+            }
+        }
+    }
+
     // Create menu bar buttons
     const menuBar = document.getElementById('menu-bar');
-    const buttons = {
-            'Shell': {'New Window' : function () {
-                ipcRenderer.send('create-new-window');
-            }, 
-            'Exit' : function () {
-                window.close();
-            }
-        },
+    const buttons = Object.assign({}, shellMenu, {
         'Edit': {'Cut' : function () {
             const selectedText = term.getSelection().toString();
             if (selectedText) {
@@ -50,7 +71,7 @@ window.onload = function() {
         'Help': {'About' : function () {
             ipcRenderer.send('show-about-window');
         }}
-    };
+    });
     // Create buttons and dropdowns for the menu bar
     for (const [btnText, subButtons] of Object.entries(buttons)) {
         const btn = document.createElement('button');
