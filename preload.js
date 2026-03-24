@@ -1,5 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron/renderer')
 
-contextBridge.executeInMainWorld('electronAPI', {
-    getOS: () => ipcRenderer.send('get-os'),
+contextBridge.exposeInMainWorld('app', {
+    getOS: () => ipcRenderer.invoke('get-os'),
+    getVersion: () => ipcRenderer.invoke('get-version')
 });

@@ -1,15 +1,22 @@
-const { ipcRenderer } = require('electron');
-const { platform } = require('os');
+async function getVersion() {
+    return await window.app.getVersion();
+}
+
+async function getOS() {
+    return await window.app.getOS();
+}
 
 window.onload = function() {
-    ipcRenderer.invoke('get-version').then((version) => {
+     getVersion().then(version => {
         document.getElementById('version').textContent = version;
-    });
+     });
 
     const iconImage = document.getElementById('app-icon');
-    if (platform() === 'darwin') {
-        iconImage.src = "assets/electerm_logo_macos.png";
-    } else {
-        iconImage.src = "assets/electerm_logo.png";
-    }
+    getOS().then(os => {
+        if (os === 'darwin') {
+            iconImage.src = "assets/electerm_logo_macos.png";
+        } else {
+            iconImage.src = "assets/electerm_logo.png";
+        }
+    });
 }

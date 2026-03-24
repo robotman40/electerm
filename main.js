@@ -20,10 +20,6 @@ app.whenReady().then(() => {
         showAboutWindow();
     });
 
-    ipcMain.handle('get-version', () => {
-        return app.getVersion();
-    })
-
     ipcMain.handle('quit-app', () => {
         app.quit()
     })
@@ -31,6 +27,10 @@ app.whenReady().then(() => {
     ipcMain.handle('get-os', () => {
         return os.platform();
     });
+
+    ipcMain.handle('get-version', () => {
+        return app.getVersion();
+    })
 
     createWindow();
     Menu.setApplicationMenu(null);
