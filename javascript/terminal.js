@@ -60,5 +60,3 @@ function createTerminal() {
 
     return term;
 };
-
-module.exports = { createTerminal }

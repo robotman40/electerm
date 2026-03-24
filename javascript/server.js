@@ -1,7 +1,3 @@
-const { platform } = require('os');
-const { spawn } = require('node-pty');
-const process = require('process');
-
 function attachPtyProcess(terminalObject, fitAddonObject) {
     try {
         // On Windows, cmd.exe must be used since powershell.exe has rendering problems. On Unix-like systems, use the default shell.
@@ -33,5 +29,3 @@ function attachPtyProcess(terminalObject, fitAddonObject) {
       return e;
     }
 }
-
-module.exports = { attachPtyProcess }

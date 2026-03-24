@@ -1,4 +1,5 @@
 const { BrowserWindow } = require('electron');
+const path = require('node:path');
 
 function showAboutWindow() {
     const aboutWin = new BrowserWindow({
@@ -24,13 +25,14 @@ function createWindow() {
         width: 800,
         height: 500,
         webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false
+            preload: path.join(__dirname, '..', 'preload.js'),
+            nodeIntegration: false,
+            contextIsolation: true
         } 
     });
 
     win.loadFile('index.html');
-    // win.webContents.openDevTools(); // Uncomment for debugging purposes
+    win.webContents.openDevTools(); // Uncomment for debugging purposes
 
     win.once('ready-to-show', () => {
         win.show();

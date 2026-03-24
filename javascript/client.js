@@ -1,6 +1,3 @@
-const { ipcRenderer } = require('electron');
-const os = require('os');
-
 window.onload = function() {
     // create Terminal and get object
     const term = createTerminal();
