@@ -2,6 +2,7 @@ const { BrowserWindow } = require('electron');
 const path = require('node:path');
 
 function showAboutWindow() {
+    // Create a new show window
     const aboutWin = new BrowserWindow({
         show: false,
         width: 400,
@@ -21,6 +22,7 @@ function showAboutWindow() {
 }
 
 function createWindow() {
+    // Create new terminal windows
     const win = new BrowserWindow({
         show: false,
         width: 800,
