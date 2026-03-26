@@ -128,11 +128,11 @@ window.onload = async function() {
 
     // Set up cut, copy, and paste events
     document.oncut(() => {
-        navigator.clipboard.writeText(term.selectedText.trim());
+        navigator.clipboard.writeText(term.selectedText);
     });
 
     document.oncopy(() => {
-        navigator.clipboard.writeText(term.selectedText.trim());
+        navigator.clipboard.writeText(term.selectedText);
     });
 
     document.onpaste(() => {
