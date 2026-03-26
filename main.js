@@ -13,10 +13,6 @@ function createNewTermSession() {
 
     window = createWindow(); // Call the create Window function
 
-    window.on('closed', () => {
-        ptySessions.delete(window.id); // Delete the associated PTY object when the window closes
-    });
-
     window.once('ready-to-show', () => {
         window.show(); // Show window when it is fully rendered and ready
     });
