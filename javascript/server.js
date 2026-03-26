@@ -1,4 +1,3 @@
-const { ipcMain } = require('electron');
 const { spawn } = require('node-pty');
 const os = require('os');
 
