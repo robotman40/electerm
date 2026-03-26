@@ -6,8 +6,14 @@ const os = require('os');
 
 fixPath(); // Ensure the server has the correct PATH environment variable
 
+const ptySessions = new Map();
+
 function createNewTermSession() {
     window = createWindow();
+
+    window.on('closed', () => {
+        ptySessions.delete(window.id);
+    });
 
     window.once('ready-to-show', () => {
         window.show();
@@ -28,8 +34,6 @@ app.on('activate', () => {
 });
 
 app.whenReady().then(() => {
-    let ptyInstance;
-    
     Menu.setApplicationMenu(null);
 
     ipcMain.handle('create-new-window', () => {
@@ -53,15 +57,37 @@ app.whenReady().then(() => {
     })
 
     ipcMain.handle('create-pty-session', (event, rows, cols) => {
-        ptyInstance = new PTYSession(rows, cols, window);
+        const window = BrowserWindow.fromWebContents(event.sender);
+        const windowId = window.id;
+
+        // Clean up existing session if any
+        if (ptySessions.has(windowId)) {
+            ptySessions.get(windowId).destroy();
+            ptySessions.delete(windowId);
+        }
+
+        const ptyInstance = new PTYSession(rows, cols, window);
+        ptySessions.set(windowId, ptyInstance);
     })
 
     ipcMain.handle('resize-pty', (event, rows, cols) => {
-        ptyInstance.resizePTY(rows, cols);
+        const window = BrowserWindow.fromWebContents(event.sender);
+        const windowId = window.id;
+        const ptyInstance = ptySessions.get(windowId);
+
+        if (ptyInstance) {
+            ptyInstance.resizePTY(rows, cols);
+        }
     })
 
     ipcMain.handle('send-data-to-pty', (event, data) => {
-       ptyInstance.writeToPTY(data);
+        const window = BrowserWindow.fromWebContents(event.sender);
+        const windowId = window.id;
+        const ptyInstance = ptySessions.get(windowId);
+
+        if (ptyInstance) {
+            ptyInstance.writeToPTY(data);
+        }
     })
 
     createNewTermSession();

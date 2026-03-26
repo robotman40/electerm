@@ -40,6 +40,10 @@ class PTYSession {
     writeToPTY(data) {
         this.ptyProcess.write(data);
     }
+
+    destroy() {
+        this.ptyProcess.kill();
+    }
 }
 
 module.exports = { PTYSession }
