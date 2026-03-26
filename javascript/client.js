@@ -36,7 +36,6 @@ window.onload = async function() {
     const term = createTerminal();
 
     const shellMenu = await buildShellMenu();
-    console.log(shellMenu);
 
     // Create menu bar buttons
     const menuBar = document.getElementById('menu-bar');
