@@ -22,6 +22,13 @@ app.on('window-all-closed', () => {
   }
 });
 
+app.on('activate', () => {
+    // If no windows are open when the icon is clicked, create a new one
+    if (BrowserWindow.getAllWindows().length === 0) {
+        createNewTermSession();
+    }
+});
+
 app.whenReady().then(() => {
     
     Menu.setApplicationMenu(null);
