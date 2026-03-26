@@ -1,11 +1,11 @@
-function fitTerminal(term, fitAddon, ptyProcess) {
+function fitTerminal(term, fitAddon) {
     const terminalView = document.getElementById('terminal');
     terminalView.getElementsByClassName('xterm-screen')[0].style.height = window.innerHeight - 10 + 'px'; // Ensure the terminal fills the container
 
     // Do a brief resize to get the text to fit/wrap
     fitAddon.fit();
-    term.refresh(0, term.rows - 1);
-    ptyProcess.updateSize(term.cols, term.rows);
+    term.refresh(0, term.options.rows - 1);
+    window.app.resizePTY(term.options.rows, term.options.cols)
 }
 
 function adjustWindowSize(term, value) {
@@ -34,29 +34,35 @@ function createTerminal() {
     term.loadAddon(fitAddon);
     term.open(document.getElementById('terminal'));
 
-    const ptyProcess = attachPtyProcess(term, fitAddon);
+    window.app.createPTYSession(term.rows, term.cols);
 
-    fitTerminal(term, fitAddon, ptyProcess);
+    fitTerminal(term, fitAddon);
 
     term.zoomIn = function() {
         adjustWindowSize(term, 2);
-        fitTerminal(term, fitAddon, ptyProcess);
+        fitTerminal(term, fitAddon);
     }
 
     term.zoomOut = function() {
         adjustWindowSize(term, -2);
-        fitTerminal(term, fitAddon, ptyProcess);
+        fitTerminal(term, fitAddon);
     }
 
     term.resetZoom = function() {
         resetWindowSize(term, 800, 500, 13);
-        fitTerminal(term, fitAddon, ptyProcess);
+        fitTerminal(term, fitAddon);
     }
 
     // Handle window resize events to keep the terminal fitting the container
     window.onresize = () => {
-        fitTerminal(term, fitAddon, ptyProcess);
+        fitTerminal(term, fitAddon);
     };
+
+    window.app.sendDataToTerm((data) => {
+        term.write(data);
+    })
+
+    term.onData((data) => window.app.sendDataToPTY(data));
 
     return term;
 };

@@ -1,31 +1,46 @@
-function attachPtyProcess(terminalObject, fitAddonObject) {
-    try {
-        // On Windows, cmd.exe must be used since powershell.exe has rendering problems. On Unix-like systems, use the default shell.
-        const plat = platform();
-        const shell = plat === 'win32' ? 'cmd.exe' : process.env.SHELL || '/bin/sh' ; 
+const { ipcMain } = require('electron');
+const { spawn } = require('node-pty');
+const os = require('os');
 
-        const ptyProcess = spawn(shell, [], {
-            cwd: process.env.HOME,
-            env: process.env,
-            encoding: 'utf8',
-            rows: terminalObject.rows,
-            cols: terminalObject.cols
-        }); 
+class PTYSession {
+    static ptyProcess = null;
 
-        ptyProcess.updateSize = function(cols, rows) {
-            ptyProcess.resize(cols, rows);
+    constructor(rows, cols, window) {
+        try {
+            // On Windows, cmd.exe must be used since powershell.exe has rendering problems. On Unix-like systems, use the default shell.
+            const plat = os.platform();
+            const shell = plat === 'win32' ? 'cmd.exe' : process.env.SHELL || '/bin/sh' ; 
+
+            this.ptyProcess = spawn(shell, [], {
+                cwd: process.env.HOME,
+                env: process.env,
+                encoding: 'utf8',
+                rows: rows,
+                cols: cols
+            }); 
+
+            this.ptyProcess.on('data', (data) => {
+                window.webContents.send('send-data-to-term', data)
+            });
+
+            this.ptyProcess.on('exit', (code, signal) => {
+                console.log(`The shell excited with code ${code} and signal ${signal}`);
+                window.close();
+            })
+
+        } catch (e) {
+            console.log(e)
+            return e;
         }
+    }
 
-        ptyProcess.on('data', (data) => terminalObject.write(data));
-        ptyProcess.on('exit', (code, signal) => {
-            console.log(`The shell excited with code ${code} and signal ${signal}`);
-            window.close();
-        })
-        terminalObject.onData((data) => ptyProcess.write(data));
+    resizePTY(rows, cols) {
+        this.ptyProcess.resize(cols, rows);
+    }
 
-        return ptyProcess;
-
-    } catch (e) {
-      return e;
+    writeToPTY(data) {
+        this.ptyProcess.write(data);
     }
 }
+
+module.exports = { PTYSession }

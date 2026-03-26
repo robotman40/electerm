@@ -35,9 +35,7 @@ function createWindow() {
     win.loadFile('index.html');
     win.webContents.openDevTools(); // Uncomment for debugging purposes
 
-    win.once('ready-to-show', () => {
-        win.show();
-    });
+    return win;
 }
 
 module.exports = { createWindow, showAboutWindow };

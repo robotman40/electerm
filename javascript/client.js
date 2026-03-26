@@ -4,26 +4,26 @@ window.onload = function() {
 
     let shellMenu;
     // For buttons, we will change how they work based off the platform
-    if (os.platform() === 'darwin') {
+    if (window.app.getOS() === 'darwin') {
         shellMenu = {
                 'Shell': {'New Window' : function () {
-                    ipcRenderer.invoke('create-new-window');
+                    window.app.createNewWindow();
                 }, 
                 'Close Window': function () {
                     window.close();
                 },
                 'Quit' : function () {
-                    ipcRenderer.invoke('quit-app')
+                    window.app.quitApp();
                 }
             }
         }
     } else {
         shellMenu = {
                 'Shell': {'New Window' : function () {
-                    ipcRenderer.invoke('create-new-window');
+                    window.app.createNewWindow();
                 }, 
                 'Exit' : function () {
-                    ipcRenderer.invoke('quit-app')
+                    window.app.quitApp();
                 }
             }
         }
@@ -66,7 +66,7 @@ window.onload = function() {
             term.resetZoom(); // Reset to default font size
         }},
         'Help': {'About' : function () {
-            ipcRenderer.invoke('show-about-window');
+            window.app.showAboutWindow();
         }}
     });
     // Create buttons and dropdowns for the menu bar

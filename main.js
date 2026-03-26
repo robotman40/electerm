@@ -1,9 +1,20 @@
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+const { PTYSession } = require('./javascript/server');
 const { createWindow, showAboutWindow } = require('./javascript/windows')
 const fixPath = require('fix-path').default;
 const os = require('os');
 
 fixPath(); // Ensure the server has the correct PATH environment variable
+
+function createNewTermSession() {
+    let ptyInstance = null;
+
+    window = createWindow();
+
+    window.once('ready-to-show', () => {
+        window.show();
+    });
+}
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -12,8 +23,11 @@ app.on('window-all-closed', () => {
 });
 
 app.whenReady().then(() => {
+    
+    Menu.setApplicationMenu(null);
+
     ipcMain.handle('create-new-window', () => {
-        createWindow()
+        createNewTermSession()
     });
 
     ipcMain.handle('show-about-window', () => {
@@ -32,10 +46,17 @@ app.whenReady().then(() => {
         return app.getVersion();
     })
 
-    createWindow();
-    Menu.setApplicationMenu(null);
+    ipcMain.handle('create-pty-session', (event, rows, cols) => {
+        ptyInstance = new PTYSession(rows, cols, window);
+    })
 
-    app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) createWindow()
-    });
+    ipcMain.handle('resize-pty', (event, rows, cols) => {
+        ptyInstance.resizePTY(rows, cols);
+    })
+
+    ipcMain.handle('send-data-to-pty', (event, data) => {
+       ptyInstance.writeToPTY(data);
+    })
+
+    createNewTermSession();
 });
