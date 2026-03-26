@@ -22,7 +22,7 @@ async function buildShellMenu() {
                     window.app.createNewWindow();
                 }, 
                 'Exit' : function () {
-                    window.app.quitApp();
+                    window.close();
                 }
             }
         }
