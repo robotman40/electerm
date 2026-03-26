@@ -1,14 +1,18 @@
 function fitTerminal(term, fitAddon) {
+    // Handle refitting the terminal
+
+    // Get the terminal element in the window and make sure it is refitting in the window
     const terminalView = document.getElementById('terminal');
     terminalView.getElementsByClassName('xterm-screen')[0].style.height = window.innerHeight - 10 + 'px'; // Ensure the terminal fills the container
 
-    // Do a brief resize to get the text to fit/wrap
+    // Perform the logic for refitting the terminal contents
     fitAddon.fit();
     term.refresh(0, term.options.rows - 1);
     window.app.resizePTY(term.rows, term.cols)
 }
 
 function adjustWindowSize(term, value) {
+    // Handle window size readjustments
     new_width = (window.innerWidth * ((term.options.fontSize + value) / term.options.fontSize)) - window.innerWidth;
     new_height = (window.innerHeight * ((term.options.fontSize + value) / term.options.fontSize)) - window.innerHeight;
 
@@ -17,6 +21,7 @@ function adjustWindowSize(term, value) {
 }
 
 function resetWindowSize(term, width, height, size) {
+    // Resize the window size
     term.options.fontSize = size;
     window.resizeTo(width, height)
 }
@@ -28,16 +33,21 @@ function createTerminal() {
         scrollOnEraseInDisplay: true,
         convertEol: true
     });
+    // Set the default font size
     term.options.fontSize = 13;   
 
+    // Create the fit object and load the terminal element from the HTML into the term object
     const fitAddon = new FitAddon.FitAddon();
     term.loadAddon(fitAddon);
     term.open(document.getElementById('terminal'));
 
+    // Start the PTY session
     window.app.createPTYSession(term.rows, term.cols);
 
+    // Fit the terminal
     fitTerminal(term, fitAddon);
 
+    // Functions for handling terminal resizing
     term.zoomIn = function() {
         adjustWindowSize(term, 2);
         fitTerminal(term, fitAddon);
@@ -58,11 +68,13 @@ function createTerminal() {
         fitTerminal(term, fitAddon);
     };
 
+    // Receive data from the PTY session and write it to the terminal
     window.app.sendDataToTerm((data) => {
         term.write(data);
     })
 
+    // Send data from the terminal to the PTY session
     term.onData((data) => window.app.sendDataToPTY(data));
 
-    return term;
+    return term; // Return the terminal object
 };
