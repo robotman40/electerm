@@ -51,7 +51,7 @@ function createTerminal() {
         const file = event.dataTransfer?.files[0];
         if (file) {
             const fullPath = window.app.getFilePath(file);
-            term.paste(fullPath);
+            term.paste(`'${fullPath}'`);
         }
     };
 
