@@ -39,7 +39,21 @@ function createTerminal() {
     // Create the fit object and load the terminal element from the HTML into the term object
     const fitAddon = new FitAddon.FitAddon();
     term.loadAddon(fitAddon);
-    term.open(document.getElementById('terminal'));
+    const terminalView = document.getElementById('terminal');
+    term.open(terminalView);
+    terminalView.ondragover = function(event) {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'copy';
+    };
+    terminalView.ondrop = function(event) {
+        event.preventDefault();
+
+        const file = event.dataTransfer?.files[0];
+        if (file) {
+            const fullPath = window.app.getFilePath(file);
+            term.paste(fullPath);
+        }
+    };
 
     // Start the PTY session
     window.app.createPTYSession(term.rows, term.cols);
