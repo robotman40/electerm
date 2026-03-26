@@ -5,7 +5,7 @@ function fitTerminal(term, fitAddon) {
     // Do a brief resize to get the text to fit/wrap
     fitAddon.fit();
     term.refresh(0, term.options.rows - 1);
-    window.app.resizePTY(term.options.rows, term.options.cols)
+    window.app.resizePTY(term.rows, term.cols)
 }
 
 function adjustWindowSize(term, value) {
