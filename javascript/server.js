@@ -13,7 +13,7 @@ class PTYSession {
 
             // Spawn the default shell
             this.ptyProcess = spawn(shell, [], {
-                cwd: process.env.HOME,
+                cwd: plat === 'win32' ? process.env.USERPROFILE : process.env.HOME,
                 env: process.env,
                 encoding: 'utf8',
                 rows: rows,
