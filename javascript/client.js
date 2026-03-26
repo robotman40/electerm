@@ -1,10 +1,9 @@
-window.onload = function() {
-    // create Terminal and get object
-    const term = createTerminal();
-
+async function buildShellMenu() {
     let shellMenu;
+    const os = await window.app.getOS();
+
     // For buttons, we will change how they work based off the platform
-    if (window.app.getOS() === 'darwin') {
+    if (os === 'darwin') {
         shellMenu = {
                 'Shell': {'New Window' : function () {
                     window.app.createNewWindow();
@@ -28,6 +27,16 @@ window.onload = function() {
             }
         }
     }
+
+    return shellMenu;
+}
+
+window.onload = async function() {
+    // create Terminal and get object
+    const term = createTerminal();
+
+    const shellMenu = await buildShellMenu();
+    console.log(shellMenu);
 
     // Create menu bar buttons
     const menuBar = document.getElementById('menu-bar');
@@ -114,11 +123,11 @@ window.onload = function() {
         menuBar.appendChild(btn);
     };
 
+    // Set up cut, copy, and paste events
     document.oncut(() => {
         navigator.clipboard.writeText(term.selectedText.trim());
     });
 
-    // Set up cut, copy, and paste events
     document.oncopy(() => {
         navigator.clipboard.writeText(term.selectedText.trim());
     });
