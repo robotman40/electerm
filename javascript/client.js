@@ -35,10 +35,13 @@ window.onload = async function() {
     // create Terminal and get object
     const term = createTerminal();
 
+    // Create the Shell Menu option depending on the platform
     const shellMenu = await buildShellMenu();
 
     // Create menu bar buttons
-    const menuBar = document.getElementById('menu-bar');
+    const menuBar = document.getElementById('menu-bar'); // Get the menu-bar element
+
+    // Create the menu option set combining shellMenu and the other options
     const buttons = Object.assign({}, shellMenu, {
         'Edit': {'Cut' : function () {
             const selectedText = term.getSelection().toString();
@@ -77,6 +80,7 @@ window.onload = async function() {
             window.app.showAboutWindow();
         }}
     });
+
     // Create buttons and dropdowns for the menu bar
     for (const [btnText, subButtons] of Object.entries(buttons)) {
         const btn = document.createElement('button');
