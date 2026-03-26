@@ -7,8 +7,6 @@ const os = require('os');
 fixPath(); // Ensure the server has the correct PATH environment variable
 
 function createNewTermSession() {
-    let ptyInstance = null;
-
     window = createWindow();
 
     window.once('ready-to-show', () => {
@@ -30,6 +28,7 @@ app.on('activate', () => {
 });
 
 app.whenReady().then(() => {
+    let ptyInstance;
     
     Menu.setApplicationMenu(null);
 
