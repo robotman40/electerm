@@ -2,8 +2,6 @@ const { spawn } = require('node-pty');
 const os = require('os');
 
 class PTYSession {
-    static ptyProcess = null;
-
     constructor(rows, cols, window) {
         try {
             // On Windows, cmd.exe must be used since powershell.exe has rendering problems. On Unix-like systems, use the default shell.
