@@ -1,3 +1,8 @@
+@font-face {
+    font-family: office-code-pro;
+    src: url(fonts/office-code-pro/officecodepro-regular.otf);
+}
+
 html, body {
     margin: 0;
     padding: 0;
@@ -6,7 +11,8 @@ html, body {
     overflow: hidden; /* Prevent scrollbars on the body */
     background-color: black;
     color: white;
-    font-family: monospace;
+    font-family: office-code-pro;
+    font-size: 13px;
     align-items: center;
 }
 

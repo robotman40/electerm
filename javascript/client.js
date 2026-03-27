@@ -85,6 +85,7 @@ window.onload = async function() {
     for (const [btnText, subButtons] of Object.entries(buttons)) {
         const btn = document.createElement('button');
         btn.textContent = btnText;
+        btn.style.fontFamily = 'office-code-pro';
         btn.style.backgroundColor = 'darkslategray';
         btn.style.color = 'white';
         btn.style.border = 'none';
@@ -109,6 +110,7 @@ window.onload = async function() {
         Object.entries(subButtons).forEach(([subBtnText, subBtnFunction]) => {
             const subBtn = document.createElement('button');
             subBtn.textContent = subBtnText;
+            subBtn.style.fontFamily = 'office-code-pro';
             subBtn.style.textAlign = 'left';
             subBtn.style.backgroundColor = 'white';
             subBtn.style.color = 'black';
