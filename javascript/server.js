@@ -47,11 +47,6 @@ class PTYSession {
         // Writes to the PTY
         this.ptyProcess.write(data);
     }
-
-    destroy() {
-        // Kills the PTY session
-        this.ptyProcess.kill();
-    }
 }
 
 module.exports = { PTYSession }

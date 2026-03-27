@@ -1,4 +1,4 @@
-function fitTerminal(term, fitAddon) {
+function fitTerminal(ptyId, term, fitAddon) {
     // Handle refitting the terminal
 
     // Get the terminal element in the window and make sure it is refitting in the window
@@ -8,7 +8,7 @@ function fitTerminal(term, fitAddon) {
     // Perform the logic for refitting the terminal contents
     fitAddon.fit();
     term.refresh(0, term.options.rows - 1);
-    window.app.resizePTY(term.rows, term.cols)
+    window.app.resizePTY(ptyId, term.rows, term.cols)
 }
 
 function adjustWindowSize(term, value) {
@@ -26,7 +26,7 @@ function resetWindowSize(term, width, height, size) {
     window.resizeTo(width, height)
 }
 
-function createTerminal() {
+async function createTerminal() {
     // Create the terminal instance and fit it to the container
     const term = new Terminal({
         cursorBlink: true,
@@ -55,11 +55,11 @@ function createTerminal() {
         }
     };
 
-    // Start the PTY session
-    window.app.createPTYSession(term.rows, term.cols);
+    // Start the PTY session and get the ID of
+    const ptyId = await window.app.createPTYSession(term.rows, term.cols);
 
     // Fit the terminal
-    fitTerminal(term, fitAddon);
+    fitTerminal(ptyId, term, fitAddon);
 
     // Functions for handling terminal resizing
     term.zoomIn = function() {
@@ -88,7 +88,7 @@ function createTerminal() {
     })
 
     // Send data from the terminal to the PTY session
-    term.onData((data) => window.app.sendDataToPTY(data));
+    term.onData((data) => window.app.sendDataToPTY(ptyId, data));
 
     return term; // Return the terminal object
 };

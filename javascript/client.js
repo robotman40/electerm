@@ -33,7 +33,7 @@ async function buildShellMenu() {
 
 window.onload = async function() {
     // create Terminal and get object
-    const term = createTerminal();
+    const term = await createTerminal();
 
     // Create the Shell Menu option depending on the platform
     const shellMenu = await buildShellMenu();

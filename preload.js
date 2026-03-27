@@ -8,8 +8,8 @@ contextBridge.exposeInMainWorld('app', {
     getOSRelease: () => ipcRenderer.invoke('get-os-release'), // Get the OS release
     getVersion: () => ipcRenderer.invoke('get-version'), // Gets the application version
     createPTYSession: (rows, cols) => ipcRenderer.invoke('create-pty-session', rows, cols), // Creates a new PTY session
-    resizePTY: (rows, cols) => ipcRenderer.invoke('resize-pty', rows, cols), // Resizes the PTY session
-    sendDataToPTY: (data) => ipcRenderer.invoke('send-data-to-pty', data), // Sends data to the PTY
+    resizePTY: (id, rows, cols) => ipcRenderer.invoke('resize-pty', id, rows, cols), // Resizes the PTY session
+    sendDataToPTY: (id, data) => ipcRenderer.invoke('send-data-to-pty', id, data), // Sends data to the PTY
     sendDataToTerm: (callback) => ipcRenderer.on('send-data-to-term', (event, value) => callback(value)), // Sends data to the terminal
     getFilePath(file) {
         // Get file file path

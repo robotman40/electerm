@@ -9,6 +9,8 @@ fixPath(); // Ensure the server has the correct PATH environment variable
 
 const ptySessions = new Map(); // Keep a map of every PTY session spawned by each window
 
+let termCount = 0;
+
 function createNewTermSession() {
     // Create a new terminal window
 
@@ -56,6 +58,7 @@ app.whenReady().then(() => {
     });
 
     ipcMain.handle('get-os-release', () => {
+        // Get the operating system release name
         return os_name();
     })
 
@@ -66,24 +69,20 @@ app.whenReady().then(() => {
 
     ipcMain.handle('create-pty-session', (event, rows, cols) => {
         // Create a new PTY session
-        const window = BrowserWindow.fromWebContents(event.sender); // Get the window that sent the request
-        const windowId = window.id; // Get the window ID
 
-        // Clean up existing session if it previously existed (and somehow wasn't cleaned up)
-        if (ptySessions.has(windowId)) {
-            ptySessions.get(windowId).destroy(); // Kill the PTY session
-            ptySessions.delete(windowId); // Finally delete the object from the map
-        }
+        // Ensure each new session is unique
+        const ptyId = termCount;
+        termCount += 1;
 
         const ptyInstance = new PTYSession(rows, cols, window); // Create a new PTY session for the window
-        ptySessions.set(windowId, ptyInstance); // Map the window ID and PTY session together
+        ptySessions.set(ptyId, ptyInstance); // Map the window ID and PTY session together
+
+        return ptyId; // Return the PTY session ID on success
     });
 
-    ipcMain.handle('resize-pty', (event, rows, cols) => {
+    ipcMain.handle('resize-pty', (event, id, rows, cols) => {
         // Handles resizing the PTY session during window resizing
-        const window = BrowserWindow.fromWebContents(event.sender); // Get the window that sent the request
-        const windowId = window.id; // Get the window ID
-        const ptyInstance = ptySessions.get(windowId); // Get the PTY session associated with the window
+        const ptyInstance = ptySessions.get(id); // Get the PTY session with the associated ID
 
         if (ptyInstance) {
             // If a session was found, resize the PTY session
@@ -91,11 +90,9 @@ app.whenReady().then(() => {
         }
     });
 
-    ipcMain.handle('send-data-to-pty', (event, data) => {
+    ipcMain.handle('send-data-to-pty', (event, id, data) => {
         // If data from the terminal can be sent, send it to the PTY
-        const window = BrowserWindow.fromWebContents(event.sender); // Get the window that sent the request
-        const windowId = window.id; // Get the window ID
-        const ptyInstance = ptySessions.get(windowId); // Get the PTY session associated with the window
+        const ptyInstance = ptySessions.get(id); // Get the PTY session with the associated ID
 
         if (ptyInstance) {
             // If a session was found, write to the PTY session
