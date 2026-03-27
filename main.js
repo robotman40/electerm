@@ -102,12 +102,10 @@ app.whenReady().then(() => {
 
     ipcMain.handle('end-pty-process', (event, id) => {
         // End the PTY process
-
         const ptyInstance = ptySessions.get(id); // Get the PTY session with the associated ID
 
         if (ptyInstance) {
             // End the PTY session and delete the object from memory to prevent memory leaks
-            ptyInstance.endProcess();
             ptySessions.delete(id);
         }
     })

@@ -1,3 +1,5 @@
+let term = null;
+
 async function buildShellMenu() {
     let shellMenu;
     const os = await window.app.getOS();
@@ -33,7 +35,7 @@ async function buildShellMenu() {
 
 window.onload = async function() {
     // create Terminal and get object
-    const term = await createTerminal();
+    term = await createTerminal();
 
     // Create the Shell Menu option depending on the platform
     const shellMenu = await buildShellMenu();
@@ -142,4 +144,8 @@ window.onload = async function() {
             term.write(text);
         })
     });
+}
+
+window.onbeforeunload = function() {
+    term.endSession();
 }
