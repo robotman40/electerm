@@ -49,6 +49,7 @@ class PTYSession {
     }
 
     endProcess() {
+        // Have the PTY process kill itself
         this.ptyProcess.kill();
     }
 }
