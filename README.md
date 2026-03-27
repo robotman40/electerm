@@ -9,3 +9,6 @@ A terminal emulator written in HTML, CSS, and Javascript with the Electron frame
 - Windows - Windows 10 1809 or newer
 - MacOS - MacOS Monterey or newer
 - Linux - Ubuntu 22.04 or equivalent/newer
+
+## Licenses
+The [Office Code Pro font](https://www.fontsquirrel.com/fonts/office-code-pro) by Nathan Rutzky is used in this program under the [SIL Open Font License](https://openfontlicense.org/).
