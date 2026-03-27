@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld('app', {
     showAboutWindow: () => ipcRenderer.invoke('show-about-window'), // Handles showing the About window
     quitApp: () => ipcRenderer.invoke('quit-app'), // Handles exiting the app
     getOS: () => ipcRenderer.invoke('get-os'), // Gets the OS in use
+    getOSRelease: () => ipcRenderer.invoke('get-os-release'), // Get the OS release
     getVersion: () => ipcRenderer.invoke('get-version'), // Gets the application version
     createPTYSession: (rows, cols) => ipcRenderer.invoke('create-pty-session', rows, cols), // Creates a new PTY session
     resizePTY: (rows, cols) => ipcRenderer.invoke('resize-pty', rows, cols), // Resizes the PTY session

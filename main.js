@@ -3,6 +3,7 @@ const { PTYSession } = require('./javascript/server');
 const { createWindow, showAboutWindow } = require('./javascript/windows')
 const fixPath = require('fix-path').default;
 const os = require('os');
+const os_name = require('os-name').default;
 
 fixPath(); // Ensure the server has the correct PATH environment variable
 
@@ -53,6 +54,10 @@ app.whenReady().then(() => {
         // Get the platform
         return os.platform();
     });
+
+    ipcMain.handle('get-os-release', () => {
+        return os_name();
+    })
 
     ipcMain.handle('get-version', () => {
         // Get the app version

@@ -3,6 +3,7 @@ window.onload = async function() {
 
     const iconImage = document.getElementById('app-icon'); // Get the app-icon element
     const os = await window.app.getOS(); // Get the OS version
+    document.getElementById('os_release').textContent = await window.app.getOSRelease();
 
     // Use a different icon based on the OS in use
     if (os === 'darwin') {
