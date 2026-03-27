@@ -77,6 +77,10 @@ async function createTerminal() {
         fitTerminal(term, fitAddon);
     }
 
+    term.endSession = function() {
+        window.app.endPTYProcess(ptyId);
+    }
+
     // Handle window resize events to keep the terminal fitting the container
     window.onresize = () => {
         fitTerminal(term, fitAddon);

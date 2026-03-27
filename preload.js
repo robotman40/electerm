@@ -11,6 +11,7 @@ contextBridge.exposeInMainWorld('app', {
     resizePTY: (id, rows, cols) => ipcRenderer.invoke('resize-pty', id, rows, cols), // Resizes the PTY session
     sendDataToPTY: (id, data) => ipcRenderer.invoke('send-data-to-pty', id, data), // Sends data to the PTY
     sendDataToTerm: (callback) => ipcRenderer.on('send-data-to-term', (event, value) => callback(value)), // Sends data to the terminal
+    endPTYProcess: (id) => ipcRenderer.invoke('end-pty-process', id),
     getFilePath(file) {
         // Get file file path
         const path = webUtils.getPathForFile(file);

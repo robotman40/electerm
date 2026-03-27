@@ -100,5 +100,16 @@ app.whenReady().then(() => {
         }
     });
 
+    ipcMain.handle('end-pty-process', (event, id) => {
+        // End the PTY process
+
+        const ptyInstance = ptySessions.get(id); // Get the PTY session with the associated ID
+
+        if (ptyInstance) {
+            ptyInstance.endProcess();
+            ptySessions.delete(id);
+        }
+    })
+
     createNewTermSession(); // Create a new terminal session every launch
 });
