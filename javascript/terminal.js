@@ -64,27 +64,27 @@ async function createTerminal() {
     // Functions for handling terminal resizing
     term.zoomIn = function() {
         adjustWindowSize(term, 2);
-        fitTerminal(term, fitAddon);
+        fitTerminal(ptyId, term, fitAddon);
     }
 
     term.zoomOut = function() {
         adjustWindowSize(term, -2);
-        fitTerminal(term, fitAddon);
+        fitTerminal(ptyId, term, fitAddon);
     }
 
     term.resetZoom = function() {
         resetWindowSize(term, 800, 500, 13);
-        fitTerminal(term, fitAddon);
-    }
-
-    term.endSession = function() {
-        window.app.endPTYProcess(ptyId);
+        fitTerminal(ptyId, term, fitAddon);
     }
 
     // Handle window resize events to keep the terminal fitting the container
     window.onresize = () => {
-        fitTerminal(term, fitAddon);
+        fitTerminal(ptyId, term, fitAddon);
     };
+
+    term.endSession = function() {
+        window.app.endPTYProcess(ptyId);
+    }
 
     // Receive data from the PTY session and write it to the terminal
     window.app.sendDataToTerm((data) => {
