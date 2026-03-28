@@ -28,15 +28,23 @@ html, body {
 }
 
 .main-view {
-    display: grid;
+    width: 100%;
+    height: 90%;
+    display: block;
+}
+
+.main-view tr {
+    height: 100%;
+    width: 100%;
+    padding-bottom: 0%;
 }
 
 .terminal {
     vertical-align: top;
     width: 100%;
     height: 95%;
+    min-height: 0;
     position: relative;
-    z-index: '1';
 }
 
 .about {
