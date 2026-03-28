@@ -12,8 +12,10 @@ async function buildShellMenu() {
                 }, 
                 'Close Window': function () {
                     term.endSession();
+                    window.close();
                 },
                 'Quit' : function () {
+                    term.endSession();
                     window.app.quitApp();
                 }
             }
@@ -25,6 +27,7 @@ async function buildShellMenu() {
                 }, 
                 'Exit' : function () {
                     term.endSession();
+                    window.close();
                 }
             }
         }
