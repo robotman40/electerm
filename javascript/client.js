@@ -37,6 +37,12 @@ window.onload = async function() {
     // create Terminal and get object
     term = await createTerminal();
 
+    // Listen for the quit signal from the PTY session and end the terminal session when it is received
+    window.app.onQuitTermSignal((value) => {
+        console.log('Received quit signal from PTY session: ', value);
+        window.close();
+    });
+
     // Create the Shell Menu option depending on the platform
     const shellMenu = await buildShellMenu();
 

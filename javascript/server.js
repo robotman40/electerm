@@ -1,4 +1,3 @@
-const { BrowserWindow } = require('electron');
 const { spawn } = require('node-pty');
 const os = require('os');
 
@@ -36,10 +35,10 @@ class PTYSession {
                 }
             });
 
-            // Close the window if the PTY session ends
+            // Return a message when the shell process exits
             this.ptyProcess.on('exit', (code, signal) => {
                 console.log(`The shell excited with code ${code} and signal ${signal}`);
-                window.close();
+                window.webContents.send('quit-term-signal', { code, signal });
             })
 
         } catch (e) {

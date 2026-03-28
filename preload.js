@@ -12,6 +12,7 @@ contextBridge.exposeInMainWorld('app', {
     sendDataToPTY: (id, data) => ipcRenderer.invoke('send-data-to-pty', id, data), // Sends data to the PTY
     sendDataToTerm: (callback) => ipcRenderer.on('send-data-to-term', (event, value) => callback(value)), // Sends data to the terminal
     endPTYProcess: (id) => ipcRenderer.invoke('end-pty-process', id),
+    onQuitTermSignal: (callback) => ipcRenderer.on('quit-term-signal', (event, value) => callback(value)), // Listens for the quit signal from the PTY session
     getFilePath(file) {
         // Get file file path
         const path = webUtils.getPathForFile(file);
