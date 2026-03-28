@@ -22,12 +22,23 @@ class PTYSession {
 
             // Send data when new data is available from the pTY
             this.ptyProcess.on('data', (data) => {
-                window.webContents.send('send-data-to-term', data)
+                try {
+                    window.webContents.send('send-data-to-term', data)
+                } catch (e) {
+                    // Hacky workaround for when closing the window during an active command like pstop
+                    // I don't know what else to do about this *sigh*
+                    if (e.message.includes('Object has been destroyed')) {
+                        console.log('Window was closed before data could be sent to terminal');
+                    } else {
+                        console.log(`Failed to send data to terminal: ${e}`);
+                    }
+                }
             });
 
             // Close the window if the PTY session ends
             this.ptyProcess.on('exit', (code, signal) => {
                 console.log(`The shell excited with code ${code} and signal ${signal}`);
+                window.close();
             })
 
         } catch (e) {
