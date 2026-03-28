@@ -28,7 +28,6 @@ class PTYSession {
             // Close the window if the PTY session ends
             this.ptyProcess.on('exit', (code, signal) => {
                 console.log(`The shell excited with code ${code} and signal ${signal}`);
-                window.close();
             })
 
         } catch (e) {
@@ -46,6 +45,10 @@ class PTYSession {
     writeToPTY(data) {
         // Writes to the PTY
         this.ptyProcess.write(data);
+    }
+
+    endSession() {
+        this.ptyProcess.kill();
     }
 }
 
