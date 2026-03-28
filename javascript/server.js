@@ -38,7 +38,17 @@ class PTYSession {
             // Return a message when the shell process exits
             this.ptyProcess.on('exit', (code, signal) => {
                 console.log(`The shell excited with code ${code} and signal ${signal}`);
-                window.webContents.send('quit-term-signal', { code, signal });
+                try {
+                    window.webContents.send('quit-term-signal', { code, signal });
+                } catch (e) {
+                    // Hacky workaround for when closing the window during an active command like pstop
+                    // I don't know what else to do about this *sigh*
+                    if (e.message.includes('Object has been destroyed')) {
+                        console.log('Window was closed before quit signal could be sent to terminal\nInvesstigate this error further to find a better solution');
+                    } else {
+                        console.log(`Failed to send quit signal to terminal: ${e}`);
+                    }
+                }
             })
 
         } catch (e) {
