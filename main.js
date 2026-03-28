@@ -106,7 +106,6 @@ app.whenReady().then(() => {
 
         if (ptyInstance) {
             // End the PTY session and delete the object from memory to prevent memory leaks
-            ptyInstance.endSession();
             ptySessions.delete(id);
         }
     })
