@@ -11,7 +11,7 @@ async function buildShellMenu() {
                     window.app.createNewWindow();
                 }, 
                 'Close Window': function () {
-                    window.close();
+                    term.endSession();
                 },
                 'Quit' : function () {
                     window.app.quitApp();
@@ -24,7 +24,7 @@ async function buildShellMenu() {
                     window.app.createNewWindow();
                 }, 
                 'Exit' : function () {
-                    window.close();
+                    term.endSession();
                 }
             }
         }
