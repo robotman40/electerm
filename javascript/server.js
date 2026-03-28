@@ -28,7 +28,7 @@ class PTYSession {
                     // Hacky workaround for when closing the window during an active command like pstop
                     // I don't know what else to do about this *sigh*
                     if (e.message.includes('Object has been destroyed')) {
-                        console.log('Window was closed before data could be sent to terminal');
+                        console.log('Window was closed before data could be sent to terminal\nInvesstigate this error further to find a better solution');
                     } else {
                         console.log(`Failed to send data to terminal: ${e}`);
                     }
