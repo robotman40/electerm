@@ -28,7 +28,7 @@ class PTYSession {
                     // Hacky workaround for when closing the window during an active command like pstop
                     // I don't know what else to do about this *sigh*
                     if (e.message.includes('Object has been destroyed')) {
-                        console.log('Window was closed before data could be sent to terminal\nInvesstigate this error further to find a better solution');
+                        console.log('Window was closed before data could be sent to terminal\nInvestigate this error further to find a better solution');
                     } else {
                         console.log(`Failed to send data to terminal: ${e}`);
                     }
@@ -38,17 +38,7 @@ class PTYSession {
             // Return a message when the shell process exits
             this.ptyProcess.on('exit', (code, signal) => {
                 console.log(`The shell excited with code ${code} and signal ${signal}`);
-                try {
-                    window.webContents.send('quit-term-signal', { code, signal });
-                } catch (e) {
-                    // Hacky workaround for when closing the window during an active command like pstop
-                    // I don't know what else to do about this *sigh*
-                    if (e.message.includes('Object has been destroyed')) {
-                        console.log('Window was closed before quit signal could be sent to terminal\nInvesstigate this error further to find a better solution');
-                    } else {
-                        console.log(`Failed to send quit signal to terminal: ${e}`);
-                    }
-                }
+                window.webContents.send('quit-term-signal', { code, signal });
             })
 
         } catch (e) {
@@ -66,10 +56,6 @@ class PTYSession {
     writeToPTY(data) {
         // Writes to the PTY
         this.ptyProcess.write(data);
-    }
-
-    endSession() {
-        this.ptyProcess.kill();
     }
 }
 
