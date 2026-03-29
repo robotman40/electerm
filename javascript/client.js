@@ -38,7 +38,7 @@ async function buildShellMenu() {
 
 window.onload = async function() {
     // create Terminal and get object
-    term = await createTerminal();
+    term = await createTerminal(document.getElementById('terminal-1'));
 
     // Listen for the quit signal from the PTY session and end the terminal session when it is received
     window.app.onQuitTermSignal((value) => {

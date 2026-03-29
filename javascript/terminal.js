@@ -1,8 +1,7 @@
-function fitTerminal(ptyId, term, fitAddon) {
+function fitTerminal(ptyId, term, fitAddon, terminalView) {
     // Handle refitting the terminal
 
     // Get the terminal element in the window and make sure it is refitting in the window
-    const terminalView = document.getElementById('terminal');
     terminalView.getElementsByClassName('xterm-screen')[0].style.height = window.innerHeight - 10 + 'px'; // Ensure the terminal fills the container
 
     // Perform the logic for refitting the terminal contents
@@ -26,7 +25,7 @@ function resetWindowSize(term, width, height, size) {
     window.resizeTo(width, height)
 }
 
-async function createTerminal() {
+async function createTerminal(terminalView) {
     // Create the terminal instance and fit it to the container
     const term = new Terminal({
         cursorBlink: true,
@@ -39,7 +38,6 @@ async function createTerminal() {
     // Create the fit object and load the terminal element from the HTML into the term object
     const fitAddon = new FitAddon.FitAddon();
     term.loadAddon(fitAddon);
-    const terminalView = document.getElementById('terminal');
     term.open(terminalView);
     terminalView.ondragover = function(event) {
         event.preventDefault();
@@ -59,27 +57,27 @@ async function createTerminal() {
     const ptyId = await window.app.createPTYSession(term.rows, term.cols);
 
     // Fit the terminal
-    fitTerminal(ptyId, term, fitAddon);
+    fitTerminal(ptyId, term, fitAddon, terminalView);
 
     // Functions for handling terminal resizing
     term.zoomIn = function() {
         adjustWindowSize(term, 2);
-        fitTerminal(ptyId, term, fitAddon);
+        fitTerminal(ptyId, term, fitAddon, terminalView);
     }
 
     term.zoomOut = function() {
         adjustWindowSize(term, -2);
-        fitTerminal(ptyId, term, fitAddon);
+        fitTerminal(ptyId, term, fitAddon, terminalView);
     }
 
     term.resetZoom = function() {
         resetWindowSize(term, 800, 500, 13);
-        fitTerminal(ptyId, term, fitAddon);
+        fitTerminal(ptyId, term, fitAddon, terminalView);
     }
 
     // Handle window resize events to keep the terminal fitting the container
     window.onresize = () => {
-        fitTerminal(ptyId, term, fitAddon);
+        fitTerminal(ptyId, term, fitAddon, terminalView);
     };
 
     term.endSession = function() {
