@@ -1,7 +1,7 @@
-let term = null;
+term = null;
 
 async function buildShellMenu() {
-    let shellMenu;
+    var shellMenu;
     const os = await window.app.getOS();
 
     // For buttons, we will change how they work based off the platform
@@ -34,6 +34,11 @@ async function buildShellMenu() {
     }
 
     return shellMenu;
+}
+
+function createView() {
+    const mainView = document.getElementById('main-view')
+    
 }
 
 window.onload = async function() {
