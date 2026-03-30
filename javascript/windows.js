@@ -35,7 +35,7 @@ function createWindow() {
     });
 
     win.loadFile('index.html');
-    win.webContents.openDevTools(); // Uncomment for debugging purposes
+    // win.webContents.openDevTools(); // Uncomment for debugging purposes
 
     return win;
 }
