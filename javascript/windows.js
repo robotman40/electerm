@@ -6,7 +6,7 @@ function showAboutWindow() {
     const aboutWin = new BrowserWindow({
         show: false,
         width: 400,
-        height: 575,
+        height: 625,
         resizable: false,
         webPreferences: {
             preload: path.join(__dirname, '..', 'preload.js'),
