@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, shell } = require('electron');
 const { PTYSession } = require('./javascript/server');
 const { createWindow, showAboutWindow } = require('./javascript/windows')
 const fixPath = require('fix-path').default;
@@ -109,6 +109,10 @@ app.whenReady().then(() => {
             ptySessions.delete(id);
         }
     })
+
+    ipcMain.handle('open-in-browser-window', (event, link) => {
+        shell.openExternal(link);
+    });
 
     createNewTermSession(); // Create a new terminal session every launch
 });
