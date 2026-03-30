@@ -1,4 +1,4 @@
-term = null;
+var sessions = 0;
 
 async function buildShellMenu() {
     var shellMenu;
@@ -11,11 +11,9 @@ async function buildShellMenu() {
                     window.app.createNewWindow();
                 }, 
                 'Close Window': function () {
-                    term.endSession();
                     window.close();
                 },
                 'Quit' : function () {
-                    term.endSession();
                     window.app.quitApp();
                 }
             }
@@ -36,14 +34,26 @@ async function buildShellMenu() {
     return shellMenu;
 }
 
-function createView() {
-    const mainView = document.getElementById('main-view')
-    
+async function createView() {
+    sessions += 1;
+    const mainView = document.getElementById('main-view');
+    const tableCell = document.createElement('tr');
+    const divItem = document.createElement('div');
+    divItem.className = "terminal";
+    divItem.id = `terminal-${sessions}`;
+    tableCell.appendChild(divItem);
+
+    mainView.insertBefore(tableCell, mainView.firstChild);
+
+    // create Terminal and attach to the terminal viewport
+    await createTerminal(divItem);
+
+    return document.getElementById(`terminal-${sessions}`);
 }
 
 window.onload = async function() {
-    // create Terminal and get object
-    term = await createTerminal(document.getElementById('terminal-1'));
+    // Create a view
+    await createView();
 
     // Listen for the quit signal from the PTY session and end the terminal session when it is received
     window.app.onQuitTermSignal((value) => {
@@ -158,8 +168,4 @@ window.onload = async function() {
             term.write(text);
         })
     });
-}
-
-window.onbeforeunload = function() {
-    term.endSession();
 }
