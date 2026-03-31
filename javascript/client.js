@@ -10,6 +10,9 @@ async function buildShellMenu() {
                 'Shell': {'New Window' : function () {
                     window.app.createNewWindow();
                 }, 
+                'Settings': function () {
+                    window.app.openSettings();
+                },
                 'Close Window': function () {
                     window.close();
                 },
@@ -23,6 +26,9 @@ async function buildShellMenu() {
                 'Shell': {'New Window' : function () {
                     window.app.createNewWindow();
                 }, 
+                'Settings': function () {
+                    window.app.openSettings();
+                },
                 'Exit' : function () {
                     term.endSession();
                     window.close();

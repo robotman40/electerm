@@ -3,6 +3,7 @@ const { contextBridge, ipcRenderer, webUtils } = require('electron/renderer');
 contextBridge.exposeInMainWorld('app', {
     createNewWindow: () => ipcRenderer.invoke('create-new-window'), // Handles creating new windows
     showAboutWindow: () => ipcRenderer.invoke('show-about-window'), // Handles showing the About window
+    openSettings: () => ipcRenderer.invoke('open-settings'), // Open the settings Window
     quitApp: () => ipcRenderer.invoke('quit-app'), // Handles exiting the app
     getOS: () => ipcRenderer.invoke('get-os'), // Gets the OS in use
     getOSRelease: () => ipcRenderer.invoke('get-os-release'), // Get the OS release

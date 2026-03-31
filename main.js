@@ -1,6 +1,6 @@
 const { app, BrowserWindow, Menu, ipcMain, shell } = require('electron');
 const { PTYSession } = require('./javascript/server');
-const { createWindow, showAboutWindow } = require('./javascript/windows')
+const { createWindow, showAboutWindow, openSettings } = require('./javascript/windows')
 const fixPath = require('fix-path').default;
 const os = require('os');
 const os_name = require('os-name').default;
@@ -45,6 +45,10 @@ app.whenReady().then(() => {
     ipcMain.handle('show-about-window', () => {
         // When clicking the about option, show the About window
         showAboutWindow();
+    });
+
+    ipcMain.handle('open-settings', () => {
+        openSettings();
     });
 
     ipcMain.handle('quit-app', () => {

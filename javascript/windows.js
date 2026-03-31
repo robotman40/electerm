@@ -21,6 +21,19 @@ function showAboutWindow() {
     });
 }
 
+function openSettings() {
+    const settingsWin = new BrowserWindow({
+        show: false,
+        width: 625,
+        height: 625,
+        webPreferences: {
+            preload: path.join(__dirname, '..', 'preload.js'),
+            nodeIntegration: false,
+            contextIsolation: true
+        }
+    });
+}
+
 function createWindow() {
     // Create new terminal windows
     const win = new BrowserWindow({
@@ -40,4 +53,4 @@ function createWindow() {
     return win;
 }
 
-module.exports = { createWindow, showAboutWindow };
+module.exports = { createWindow, showAboutWindow, openSettings };
