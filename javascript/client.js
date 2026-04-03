@@ -1,4 +1,5 @@
 var sessions = 0;
+var zoomLevel = 1;
 
 async function buildShellMenu() {
     var shellMenu;
@@ -10,9 +11,9 @@ async function buildShellMenu() {
                 'Shell': {'New Window' : function () {
                     window.app.createNewWindow();
                 }, 
-                'Settings': function () {
-                    window.app.openSettings();
-                },
+                // 'Settings': function () {
+                //     window.app.openSettings();
+                // },
                 'Close Window': function () {
                     window.close();
                 },
@@ -26,9 +27,9 @@ async function buildShellMenu() {
                 'Shell': {'New Window' : function () {
                     window.app.createNewWindow();
                 }, 
-                'Settings': function () {
-                    window.app.openSettings();
-                },
+                // 'Settings': function () {
+                //     window.app.openSettings();
+                // },
                 'Exit' : function () {
                     term.endSession();
                     window.close();
@@ -46,20 +47,18 @@ async function createView() {
     const tableCell = document.createElement('tr');
     const divItem = document.createElement('div');
     divItem.className = "terminal";
-    divItem.id = `terminal-${sessions}`;
+    divItem.id = `terminal`;
     tableCell.appendChild(divItem);
 
     mainView.insertBefore(tableCell, mainView.firstChild);
 
     // create Terminal and attach to the terminal viewport
-    await createTerminal(divItem);
-
-    return document.getElementById(`terminal-${sessions}`);
+    return await createTerminal(divItem);
 }
 
 window.onload = async function() {
     // Create a view
-    await createView();
+    const term = await createView();
 
     // Listen for the quit signal from the PTY session and end the terminal session when it is received
     window.app.onQuitTermSignal((value) => {
@@ -102,7 +101,7 @@ window.onload = async function() {
         }},
         'View': {'Enlarge Text' : function () {
             // Zoom In functionality
-            term.zoomIn();
+            term.zoomIn(); // Increase the zoom in
         }, 'Shrink Text' : function () {
             term.zoomOut(); // Decrease font size to zoom out
         }, 'Reset Zoom' : function () {
